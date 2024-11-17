@@ -5,30 +5,50 @@ import com.javaacademy.atomic_station.exception.ReactorWorkException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+/**
+ * Реактор
+ */
 @Slf4j
 @Getter
+@Component
 public class ReactorDepartment {
+    // запущен ли реактор
     private boolean isRun = false;
-    private int counter = 0;
-    private static final long ENERGY_LIMIT =10_000_000;
-    private SecutiryDepartment secutiryDepartment;
 
+    //счетчик запуска реактора
+    private int counter = 0;
+
+    // ежедневное количество вырабатываемого электричества
+    private static final long ENERGY_LIMIT = 10_000_000;
+    // количество запусков между заменой топлива
+    private static final int FUELLIMIT = 100;
+
+    // отдел безопасности
     @Autowired
-    public ReactorDepartment(SecutiryDepartment secutiryDepartment) {
-        this.secutiryDepartment = secutiryDepartment;
+    private SecurityDepartment securityDepartment;
+
+    public ReactorDepartment(SecurityDepartment securityDepartment) {
+        this.securityDepartment = securityDepartment;
     }
 
-    public long run() throws ReactorWorkException, NuclearFuelIsEmptyException{
+    /**
+     * Запуск реактора
+     * @return  возвращает количество выработанного электричества
+     * @throws ReactorWorkException
+     * @throws NuclearFuelIsEmptyException
+     */
+    public long run() throws ReactorWorkException, NuclearFuelIsEmptyException {
 
         counter++;
-        if (counter % 100 == 0) {
-            secutiryDepartment.addAccident();
+        if (counter % FUELLIMIT == 0) {
+            securityDepartment.addAccident();
             throw new NuclearFuelIsEmptyException("Топливо закончилось");
         }
 
         if (isRun) {
-            secutiryDepartment.addAccident();
+            securityDepartment.addAccident();
             throw new ReactorWorkException("Реактор уже работает");
         }
         isRun = true;
@@ -36,13 +56,15 @@ public class ReactorDepartment {
         return ENERGY_LIMIT;
     }
 
-    public void stop() throws ReactorWorkException{
+    /**
+     * Остановка реактора
+     * @throws ReactorWorkException
+     */
+    public void stop() throws ReactorWorkException {
         if (!isRun) {
-            secutiryDepartment.addAccident();
+            securityDepartment.addAccident();
             throw new ReactorWorkException("Реактор уже выключен");
         }
         isRun = false;
     }
-
-
 }

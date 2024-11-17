@@ -1,0 +1,4 @@
+app:
+  country: France
+  currency: Euro
+  base_price: 0.5
