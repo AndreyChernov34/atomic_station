@@ -6,6 +6,7 @@ import com.javaacademy.atomic_station.exception.ReactorWorkException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,7 +23,7 @@ public class NuclearStation {
     private EconomicDepartment economicDepartment;
 
     //отдел безопасности
-    @Autowired
+
     private SecurityDepartment securityDepartment;
 
     // Общее количество выработанной энергии
@@ -39,8 +40,7 @@ public class NuclearStation {
     @Value("${app.currency}")
     private String currency;
 
-    @Autowired
-    public NuclearStation(ReactorDepartment reactorDepartment, SecurityDepartment securityDepartment,
+    public NuclearStation(@Lazy ReactorDepartment reactorDepartment, @Lazy SecurityDepartment securityDepartment,
                           EconomicDepartment economicDepartment) {
         this.reactorDepartment = reactorDepartment;
         this.securityDepartment = securityDepartment;
