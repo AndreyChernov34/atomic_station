@@ -60,13 +60,8 @@ public class NuclearStation {
 
         for (int i = 0; i < DAYS_IN_YEAR; i++) {
             try {
-                log.info("Атомная станция начала работу");
-
                 totalEnergyGeneratedYear += reactorDepartment.run();
-
-                log.info("Атомная станция закончила работу");
                 reactorDepartment.stop();
-
             } catch (ReactorWorkException | NuclearFuelIsEmptyException e) {
                 log.info(" Внимание! Происходят работы на атомной станции! Электричества нет!");
             }
