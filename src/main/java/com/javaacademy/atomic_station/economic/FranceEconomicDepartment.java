@@ -1,5 +1,7 @@
 package com.javaacademy.atomic_station.economic;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 @Component
 @Profile("france")
 public class FranceEconomicDepartment extends EconomicDepartment {
+    private static final Logger log = LoggerFactory.getLogger(FranceEconomicDepartment.class);
     // базовая (начальная) цена
     @Value("${app.base_price}")
     private BigDecimal basePrice;
@@ -35,10 +38,10 @@ public class FranceEconomicDepartment extends EconomicDepartment {
         BigDecimal result = BigDecimal.ZERO;
         while (count < countElectricity) {
             if ((countElectricity - count) > BASELIMIT) {
-                result = price.multiply(BigDecimal.valueOf(BASELIMIT));
+                result = price.multiply(BigDecimal.valueOf(BASELIMIT)).add(result);
                 count += BASELIMIT;
             } else {
-                result = price.multiply(BigDecimal.valueOf(countElectricity - count));
+                result = price.multiply(BigDecimal.valueOf(countElectricity - count)).add(result);
                 count = countElectricity;
             }
             price = price.multiply(BASE_COEFFICIENT);
