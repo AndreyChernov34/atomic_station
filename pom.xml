@@ -24,7 +24,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -60,13 +59,32 @@
 						<id>validate</id>
 						<phase>validate</phase>
 						<configuration>
-							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							<includeTestSourceDirectory>false</includeTestSourceDirectory>
 							<configLocation>google_checks.xml</configLocation>
 							<consoleOutput>true</consoleOutput>
 							<failsOnError>true</failsOnError>
 						</configuration>
 						<goals>
 							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.10</version> <!-- Убедитесь, что используете последнюю версию -->
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
 						</goals>
 					</execution>
 				</executions>

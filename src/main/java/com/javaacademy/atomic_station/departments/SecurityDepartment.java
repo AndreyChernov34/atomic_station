@@ -2,19 +2,20 @@ package com.javaacademy.atomic_station.departments;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 /**
  * Отдел безопасности
  */
 @Component
+@Getter
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityDepartment {
-
     private final NuclearStation nuclearStation;
 
     //количество инцидентов за период
-    @Getter
     private int accidentCountPeriod;
 
     public void addAccident() {

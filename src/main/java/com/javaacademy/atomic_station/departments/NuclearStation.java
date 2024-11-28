@@ -3,8 +3,9 @@ package com.javaacademy.atomic_station.departments;
 import com.javaacademy.atomic_station.economic.EconomicDepartment;
 import com.javaacademy.atomic_station.exception.NuclearFuelIsEmptyException;
 import com.javaacademy.atomic_station.exception.ReactorWorkException;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
@@ -15,25 +16,24 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class NuclearStation {
-
     // реактор
     private ReactorDepartment reactorDepartment;
-
     // экономический отдел
     private EconomicDepartment economicDepartment;
-
     //отдел безопасности
-
     private SecurityDepartment securityDepartment;
-
+    // Количество выработанной энергии в год
+    @Getter
+    private long totalEnergyGeneratedYear = 0;
     // Общее количество выработанной энергии
-    private long totalEnergyGenerated;
+    //private long totalEnergyGenerated = 0;
 
     // количество дней в году
     private static final int DAYS_IN_YEAR = 365;
 
     // счетчик инцидентов на станции
-    private int accidentCountAllTime;
+    @Getter
+    private int accidentCountAllTime = 0;
 
     @Value("${app.country}")
     private String country;
@@ -45,8 +45,6 @@ public class NuclearStation {
         this.reactorDepartment = reactorDepartment;
         this.securityDepartment = securityDepartment;
         this.economicDepartment = economicDepartment;
-        totalEnergyGenerated = 0;
-        accidentCountAllTime = 0;
     }
 
     /**
@@ -54,10 +52,9 @@ public class NuclearStation {
      * @throws NuclearFuelIsEmptyException
      * @throws ReactorWorkException
      */
-    private void startYear() throws NuclearFuelIsEmptyException, ReactorWorkException {
-        long totalEnergyGeneratedYear = 0;
+    public void startYear() throws NuclearFuelIsEmptyException, ReactorWorkException {
+        totalEnergyGeneratedYear = 0;
         log.info("Атомная станция начала работу");
-
         for (int i = 0; i < DAYS_IN_YEAR; i++) {
             try {
                 totalEnergyGeneratedYear += reactorDepartment.run();

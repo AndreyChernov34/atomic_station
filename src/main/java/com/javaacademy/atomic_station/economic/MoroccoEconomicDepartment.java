@@ -1,5 +1,6 @@
 package com.javaacademy.atomic_station.economic;
 
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -11,16 +12,19 @@ import java.math.BigDecimal;
  */
 @Component
 @Profile("morocco")
+@Getter
 public class MoroccoEconomicDepartment extends EconomicDepartment {
     // базовая (начальная) цена
     @Value("${app.base_price}")
     private BigDecimal basePrice;
 
     //повышенная цена
-    private static final BigDecimal UPPER_PRICE = BigDecimal.valueOf(6);
+    @Value("${app.upper_price}")
+    private BigDecimal upperPrice;
 
     //лимит электроэнергии для повышения цены
-    private static final long BASE_LIMIT = 5000000000L;
+    @Value("${app.upper_limit}")
+    private long upperLimit;
 
     /**
      * метод расчета дохода от произведенной энергии
@@ -33,11 +37,11 @@ public class MoroccoEconomicDepartment extends EconomicDepartment {
     public BigDecimal computeYearIncomes(long countElectricity) {
         BigDecimal result = BigDecimal.ZERO;
 
-        if (countElectricity < BASE_LIMIT) {
+        if (countElectricity < upperLimit) {
             result = basePrice.multiply(BigDecimal.valueOf(countElectricity));
         } else {
-            result = basePrice.multiply(BigDecimal.valueOf(BASE_LIMIT));
-            result = result.add(UPPER_PRICE.multiply(BigDecimal.valueOf(countElectricity - BASE_LIMIT)));
+            result = basePrice.multiply(BigDecimal.valueOf(upperLimit));
+            result = result.add(upperPrice.multiply(BigDecimal.valueOf(countElectricity - upperLimit)));
         }
         return result.stripTrailingZeros();
     }

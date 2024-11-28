@@ -2,5 +2,7 @@ app:
   country: Morocco
   currency: Dirham
   base_price: 5
+  upper_price: 6
+  upper_limit: 5000000000
 
 

@@ -5,7 +5,6 @@ import com.javaacademy.atomic_station.exception.ReactorWorkException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -34,20 +33,16 @@ public class ReactorDepartment {
      * @throws NuclearFuelIsEmptyException
      */
     public long run() throws ReactorWorkException, NuclearFuelIsEmptyException {
-
         if (isRun) {
             securityDepartment.addAccident();
             throw new ReactorWorkException("Реактор уже работает");
         }
-
         counter++;
         if (counter % FUELLIMIT == 0) {
             securityDepartment.addAccident();
             throw new NuclearFuelIsEmptyException("Топливо закончилось");
         }
-
         isRun = true;
-
         return ENERGY_LIMIT;
     }
 
