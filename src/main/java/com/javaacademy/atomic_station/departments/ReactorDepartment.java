@@ -29,8 +29,8 @@ public class ReactorDepartment {
     /**
      * Запуск реактора
      * @return  возвращает количество выработанного электричества
-     * @throws ReactorWorkException
-     * @throws NuclearFuelIsEmptyException
+     * @throws ReactorWorkException                 Реактор уже в требуемом режиме работы
+     * @throws NuclearFuelIsEmptyException          Кончилось топливо
      */
     public long run() throws ReactorWorkException, NuclearFuelIsEmptyException {
         if (isRun) {
@@ -48,7 +48,7 @@ public class ReactorDepartment {
 
     /**
      * Остановка реактора
-     * @throws ReactorWorkException
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
      */
     public void stop() throws ReactorWorkException {
         if (!isRun) {

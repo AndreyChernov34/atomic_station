@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Profile;
@@ -29,8 +28,8 @@ public class ReactorDepartmentTest {
 
 
     /**
-     * Остановка реактора
-     * @throws ReactorWorkException
+     * Тест остановки реактора
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
      */
     @Test
     public void stopSuccessTest() throws ReactorWorkException, NuclearFuelIsEmptyException {
@@ -41,15 +40,22 @@ public class ReactorDepartmentTest {
         Assertions.assertEquals(excepted, result);
     }
 
+    /**
+     * Тест остановки реактора с проверкой на исключения
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
+     */
     @Test
     public void stopThrowReactorWorksTest() throws ReactorWorkException {
-
         ReactorWorkException result = Assertions.assertThrows(ReactorWorkException.class, () -> {
             reactorDepartment.stop();
         });
         Assertions.assertEquals("Реактор уже выключен", result.getMessage());
     }
 
+    /**
+     * Тест запуска реактора
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
+     */
     @Test
     public void runSuccessTest() throws ReactorWorkException {
         long result = 0;
@@ -60,8 +66,13 @@ public class ReactorDepartmentTest {
         }
         long expected = 10000000L;
         Assertions.assertEquals(expected, result);
-        Assertions.assertEquals(true, reactorDepartment.isRun());
+        Assertions.assertTrue(reactorDepartment.isRun());
     }
+
+    /**
+     * Тест запуска реактора с проверкой на исключения
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
+     */
 
     @Test
     public void runThrowReactorWorkTest() throws ReactorWorkException {
@@ -72,11 +83,15 @@ public class ReactorDepartmentTest {
             throw new RuntimeException(e);
         }
         ReactorWorkException resultexception = Assertions.assertThrows(ReactorWorkException.class, () -> {
-             long result = reactorDepartment.run();
+            long result = reactorDepartment.run();
         });
         Assertions.assertEquals("Реактор уже работает", resultexception.getMessage());
     }
 
+    /**
+     * Тест работы реактора при окончании топлива
+     * @throws ReactorWorkException     Реактор уже в требуемом режиме работы
+     */
     @Test
     public void runThrowNuclearFuelIsEmptyTest() throws ReactorWorkException {
         for (int i = 0; i < 99; i++) {
@@ -87,7 +102,6 @@ public class ReactorDepartmentTest {
                 throw new RuntimeException(e);
             }
         }
-
         NuclearFuelIsEmptyException resultexception = Assertions.assertThrows(NuclearFuelIsEmptyException.class, () -> {
             long result = reactorDepartment.run();
         });

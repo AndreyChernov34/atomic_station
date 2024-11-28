@@ -16,9 +16,11 @@ public class MoroccoEconomicDepartmentTest {
     @Autowired
     MoroccoEconomicDepartment moroccoEconomicDepartment;
 
+    /**
+     * Тест при заданном электричестве 3.62 миллиарда кВт·ч
+     */
     @Test
     public void computeYearIncomesSuccess() {
-        // 3.62 миллиарда кВт·ч
         long countElectricity = 3620000000L;
         // результат
         BigDecimal result = moroccoEconomicDepartment.computeYearIncomes(countElectricity);
@@ -26,10 +28,12 @@ public class MoroccoEconomicDepartmentTest {
         BigDecimal expectedResult = BigDecimal.valueOf(18100000000L).stripTrailingZeros();
         assertEquals(expectedResult, result);
     }
-
+    /**
+     * Тест при выработанном электричестве свыше лимита 5 миллиарда кВт·ч
+     */
     @Test
     public void computeYearIncomesUnderLimit() {
-        // свыше лимита 5 миллиарда кВт·ч
+
         long countElectricity = 6000000000L;
         // результат
         BigDecimal result = moroccoEconomicDepartment.computeYearIncomes(countElectricity);
@@ -42,9 +46,12 @@ public class MoroccoEconomicDepartmentTest {
         assertEquals(expectedResult, result);
     }
 
+    /**
+     * Тест при выработанном электричестве меньше лимита 5 миллиарда кВт·ч
+     */
     @Test
     public void computeYearLessLimit() {
-        // меньше лимита 5 миллиарда кВт·ч
+
         long countElectricity = 1000000000L;
         // результат
         BigDecimal result = moroccoEconomicDepartment.computeYearIncomes(countElectricity);

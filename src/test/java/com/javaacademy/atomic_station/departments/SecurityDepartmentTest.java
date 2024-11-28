@@ -14,6 +14,9 @@ public class SecurityDepartmentTest {
     @MockBean
     private NuclearStation nuclearStation;
 
+    /**
+     * Тест метода увеличения количества инцидентов
+     */
     @Test
     public void addAccidentTest() {
         securityDepartment.addAccident();
@@ -30,7 +33,7 @@ public class SecurityDepartmentTest {
 
 
     /**
-     * Передача количества инцидентов в атомную станция и сброс счетчика
+     * Передача количества инцидентов на атомную станция и сброс счетчика
      */
     @Test
     public void resetTest() {

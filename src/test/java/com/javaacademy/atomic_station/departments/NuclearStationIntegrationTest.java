@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+/**
+ * Интеграционныйц тест работы атомной станции
+ */
 @ActiveProfiles("france")
 @SpringBootTest
 @Slf4j
@@ -26,17 +29,25 @@ public class NuclearStationIntegrationTest {
     @Autowired
     private NuclearStation nuclearStation;
 
-
+    /**
+     * Тест работы станции в течение года
+     * @throws NuclearFuelIsEmptyException  Кончилось топливо
+     * @throws ReactorWorkException         Реактор уже в требуемом режиме работы
+     */
     @Test
     public void startYearTest() throws NuclearFuelIsEmptyException, ReactorWorkException {
         long expectedtotalEnergyGenerated = ENERGY_LIMIT * (DAYS_IN_YEAR - 3);
         nuclearStation.startYear();
         Assertions.assertEquals(expectedtotalEnergyGenerated, nuclearStation.getTotalEnergyGeneratedYear());
     }
-
+    /**
+     * Тест работы станции в течение нескольких лет
+     * @throws NuclearFuelIsEmptyException      Кончилось топливо
+     * @throws ReactorWorkException             Реактор уже в требуемом режиме работы
+     */
     @Test
     public void startTest() throws NuclearFuelIsEmptyException, ReactorWorkException {
-        long expectedaccidentCountAllTime = (int) (DAYS_IN_YEAR * YEAR) / FUEL_LIMIT;
+        int expectedaccidentCountAllTime = (int) (DAYS_IN_YEAR * YEAR) / FUEL_LIMIT;
         nuclearStation.start(YEAR);
         Assertions.assertEquals(expectedaccidentCountAllTime, nuclearStation.getAccidentCountAllTime());
     }

@@ -49,8 +49,8 @@ public class NuclearStation {
 
     /**
      * Годовой цикл выработки  электричества
-     * @throws NuclearFuelIsEmptyException
-     * @throws ReactorWorkException
+     * @throws NuclearFuelIsEmptyException  Кончилось топливо
+     * @throws ReactorWorkException         Реактор уже в требуемом режиме работы
      */
     public void startYear() throws NuclearFuelIsEmptyException, ReactorWorkException {
         totalEnergyGeneratedYear = 0;
@@ -74,8 +74,8 @@ public class NuclearStation {
     /**
      * Метод запуска атомной станции на заданное количество лет
      * @param year  - количество лет
-     * @throws NuclearFuelIsEmptyException
-     * @throws ReactorWorkException
+     * @throws NuclearFuelIsEmptyException          Кончилось топливо
+     * @throws ReactorWorkException                 Реактор уже в требуемом режиме работы
      */
     public void start(int year) throws NuclearFuelIsEmptyException, ReactorWorkException {
         log.info("Действие происходит в стране: {}", country);

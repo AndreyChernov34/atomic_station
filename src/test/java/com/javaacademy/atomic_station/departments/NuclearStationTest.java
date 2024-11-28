@@ -4,11 +4,10 @@ import com.javaacademy.atomic_station.economic.EconomicDepartment;
 import com.javaacademy.atomic_station.exception.NuclearFuelIsEmptyException;
 import com.javaacademy.atomic_station.exception.ReactorWorkException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,6 +20,9 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * тест работы атомной станции
+ */
 @ActiveProfiles("france")
 @SpringBootTest
 @Slf4j
@@ -36,26 +38,18 @@ public class NuclearStationTest {
     @MockBean
     private EconomicDepartment economicDepartment;
 
-  //  @Autowired
+    @Autowired
     private NuclearStation nuclearStation;
 
-    @Value("${app.country}")
-    private String country;
-
-    @Value("${app.currency}")
-    private String currency;
-
-    @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        nuclearStation = new NuclearStation(reactorDepartment, securityDepartment, economicDepartment);
-    }
-
+    /**
+     * Тест работы станции в течение года
+     * @throws NuclearFuelIsEmptyException  Кончилось топливо
+     * @throws ReactorWorkException         Реактор уже в требуемом режиме работы
+     */
     @Test
     public void testStartYearSuccess() throws NuclearFuelIsEmptyException, ReactorWorkException {
 
         when(reactorDepartment.run()).thenReturn(1L); // Энергия, выработанная за день
-        //when(securityDepartment.getAccidentCountPeriod()).thenReturn(2);
         when(economicDepartment.computeYearIncomes(365L)).thenReturn(new BigDecimal("1000"));
 
         nuclearStation.startYear();
@@ -64,6 +58,9 @@ public class NuclearStationTest {
         assertEquals(expected, nuclearStation.getTotalEnergyGeneratedYear());
     }
 
+    /**
+     * Тест подсчета инцедентов на атомонй станции
+     */
     @Test
     public void testIncrementAccident() {
         nuclearStation.incrementAccident(1);
@@ -73,14 +70,17 @@ public class NuclearStationTest {
         assertEquals(3, nuclearStation.getAccidentCountAllTime());
     }
 
+    /**
+     * Тест работы станции в течение нескольких лет
+     * @throws NuclearFuelIsEmptyException      Кончилось топливо
+     * @throws ReactorWorkException             Реактор уже в требуемом режиме работы
+     */
     @Test
     public void startTest() throws NuclearFuelIsEmptyException, ReactorWorkException {
         when(reactorDepartment.run()).thenReturn(1L);
-        //when(securityDepartment.getAccidentCountPeriod()).thenReturn(1);
         when(economicDepartment.computeYearIncomes(365L)).thenReturn(BigDecimal.ONE);
 
         nuclearStation.start(5);
-        long expected = 5;
         assertEquals(0, nuclearStation.getAccidentCountAllTime());
 
     }

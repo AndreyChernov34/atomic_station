@@ -12,15 +12,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SpringBootTest
 @ActiveProfiles("france")
-
 class FranceEconomicDepartmentTest {
 
     @Autowired
     private FranceEconomicDepartment franceEconomicDepartment;
 
+    /**
+     * Тест по заданным параметрам 3.62 миллиарда кВт·ч
+     */
     @Test
     void computeYearIncomesSuccess() {
-        // 3.62 миллиарда кВт·ч
+
         long countElectricity = 3620000000L;
         // результат
         BigDecimal result = franceEconomicDepartment.computeYearIncomes(countElectricity);
@@ -29,9 +31,11 @@ class FranceEconomicDepartmentTest {
         assertEquals(expectedResult, result);
     }
 
+    /**
+     * Тест при выработанном электричестве меньше лимита в 1 миллиард кВт·ч
+     */
     @Test
     void computeYearIncomesLessLimit() {
-        // меньше лимита в 1 миллиард кВт·ч
         long countElectricity = 500_000_000L;
         // результат
         BigDecimal result = franceEconomicDepartment.computeYearIncomes(countElectricity);
@@ -42,9 +46,11 @@ class FranceEconomicDepartmentTest {
         assertEquals(expectedResult, result);
     }
 
+    /**
+     * Тест при выработанном электричестве больше лимита в 1 миллиард кВт·ч
+     */
     @Test
     void computeYearIncomesUnderLimit() {
-        // больше лимита в 1 миллиард кВт·ч
         long countElectricity = 2_500_000_000L;
         // результат
         BigDecimal result = franceEconomicDepartment.computeYearIncomes(countElectricity);
